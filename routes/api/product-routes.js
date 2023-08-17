@@ -4,13 +4,52 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 // The `/api/products` endpoint
 
 // get all products
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
+  try {
+    const products = await Product.findAll({
+      attributes: ['id', 'product_name', 'price', 'stock'],
+      include: [
+        {
+          model: Category,
+          attributes: ['category_name']
+        },
+        {
+          model: Tag,
+          attributes: ['tag_name']
+        },
+      ]
+    })
+    res.json(products);
+
+  } catch (error) {
+   res.status(500).json({message:'Internal Server Error'});
+  }
   // find all products
   // be sure to include its associated Category and Tag data
 });
 
 // get one product
-router.get('/:id', (req, res) => {
+router.get('/:id', async(req, res) => {
+  try {
+    const product = await Product.findOne({
+      where: {id: req.params.id},
+      attributes: ['id', 'product_name', 'price', 'stock'],
+      include: [
+        {
+          model: Category,
+          attributes: ['category_name']
+        },
+        {
+          model: Tag,
+          attributes: ['tag_name']
+        },
+      ]
+    })
+    res.json(product);
+
+  } catch (error) {
+   res.status(500).json({message:'Internal Server Error'});
+  }
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
 });
