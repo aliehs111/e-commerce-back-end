@@ -22,17 +22,17 @@ router.get('/', async (req, res) => {
     res.json(products);
 
   } catch (error) {
-   res.status(500).json({message:'Internal Server Error'});
+    res.status(500).json({ message: 'Internal Server Error' });
   }
   // find all products
   // be sure to include its associated Category and Tag data
 });
 
 // get one product
-router.get('/:id', async(req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const product = await Product.findOne({
-      where: {id: req.params.id},
+      where: { id: req.params.id },
       attributes: ['id', 'product_name', 'price', 'stock'],
       include: [
         {
@@ -48,7 +48,7 @@ router.get('/:id', async(req, res) => {
     res.json(product);
 
   } catch (error) {
-   res.status(500).json({message:'Internal Server Error'});
+    res.status(500).json({ message: 'Internal Server Error' });
   }
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
@@ -130,9 +130,25 @@ router.put('/:id', (req, res) => {
       res.status(400).json(err);
     });
 });
+// delete one product by its `id` value
+router.delete('/:id', async (req, res) => {
+  try {
+    const deleted = await Product.destroy({
+      where: {
+        id: req.params.id,
+      },
+    })
+    if (!deleted) {
+      res.status(404).json({ message: 'No product found with this id!' });
+      return;
+    }
+    res.status(200).json({ message: 'Product deleted!' });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal Server Error' });
+    
 
-router.delete('/:id', (req, res) => {
-  // delete one product by its `id` value
+  }
+
 });
 
 module.exports = router;
