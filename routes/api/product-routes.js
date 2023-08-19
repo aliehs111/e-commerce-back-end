@@ -3,6 +3,7 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // The `/api/products` endpoint
 
+// find all products including their associated Category and Tag data
 // get all products
 router.get('/', async (req, res) => {
   try {
@@ -24,8 +25,7 @@ router.get('/', async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Internal Server Error' });
   }
-  // find all products
-  // be sure to include its associated Category and Tag data
+
 });
 
 // get one product
@@ -145,7 +145,7 @@ router.delete('/:id', async (req, res) => {
     res.status(200).json({ message: 'Product deleted!' });
   } catch (error) {
     res.status(500).json({ message: 'Internal Server Error' });
-    
+
 
   }
 
