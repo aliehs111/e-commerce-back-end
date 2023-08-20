@@ -3,7 +3,7 @@ const { Category, Product } = require('../../models');
 
 // The `/api/categories` endpoint
 
-router.get('/', async(req, res) => {
+router.get('/', async (req, res) => {
   // find all categories
   // be sure to include its associated Products
   try {
@@ -12,9 +12,9 @@ router.get('/', async(req, res) => {
       include: [
         {
           model: Product,
-          attributes: ['id','product_name']
+          attributes: ['id', 'product_name']
         },
-       
+
       ]
     })
     res.json(categories);
@@ -24,9 +24,10 @@ router.get('/', async(req, res) => {
   }
 });
 
-router.get('/:id', async(req, res) => {
-  // find one category by its `id` value
-  // be sure to include its associated Products
+// find one category by its `id` value
+// be sure to include its associated Products
+router.get('/:id', async (req, res) => {
+
   try {
     const category = await Category.findOne({
       where: { id: req.params.id },
@@ -34,9 +35,9 @@ router.get('/:id', async(req, res) => {
       include: [
         {
           model: Product,
-          attributes: ['id','product_name']
+          attributes: ['id', 'product_name']
         },
-       
+
       ]
     })
     res.json(category);
@@ -79,7 +80,7 @@ router.put('/:id', async (req, res) => {
     const updatedCategory = await Category.update(req.body, {
       where: { id: categoryId } // Specify the where clause to identify the record
     });
-    
+
     if (updatedCategory[0] === 0) {
       // If no rows were updated (category with given id not found)
       return res.status(404).json({ message: "Category not found." });
@@ -106,7 +107,7 @@ router.delete('/:id', async (req, res) => {
     res.status(200).json({ message: 'Category deleted!' });
   } catch (error) {
     res.status(500).json({ message: 'Internal Server Error' });
-    
+
 
   }
 });

@@ -4,7 +4,6 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 // The `/api/products` endpoint
 
 // find all products including their associated Category and Tag data
-// get all products
 router.get('/', async (req, res) => {
   try {
     const products = await Product.findAll({
@@ -27,12 +26,13 @@ router.get('/', async (req, res) => {
   }
 
 });
+// find a single product by its `id`
+// be sure to include its associated Category and Tag data
 
-// get one product
 router.get('/:id', async (req, res) => {
   try {
     const product = await Product.findOne({
-      where: { id: req.params.id },
+      where: { id: req.params.id },//find the id parameter 
       attributes: ['id', 'product_name', 'price', 'stock'],
       include: [
         {
@@ -50,8 +50,7 @@ router.get('/:id', async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Internal Server Error' });
   }
-  // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
+
 });
 
 // create new product
@@ -66,7 +65,7 @@ router.post('/', (req, res) => {
   */
   Product.create(req.body)
     .then((product) => {
-      // if there's product tags, we need to create pairings to bulk create in the ProductTag model
+      // if there's product tags, create pairings to bulk create in the ProductTag model
       if (req.body.tagIds.length) {
         const productTagIdArr = req.body.tagIds.map((tag_id) => {
           return {
@@ -76,7 +75,7 @@ router.post('/', (req, res) => {
         });
         return ProductTag.bulkCreate(productTagIdArr);
       }
-      // if no product tags, just respond
+      // if no product tags, just respond with 200
       res.status(200).json(product);
     })
     .then((productTagIds) => res.status(200).json(productTagIds))
@@ -88,7 +87,6 @@ router.post('/', (req, res) => {
 
 // update product
 router.put('/:id', (req, res) => {
-  // update product data
   Product.update(req.body, {
     where: {
       id: req.params.id,
@@ -96,7 +94,6 @@ router.put('/:id', (req, res) => {
   })
     .then((product) => {
       if (req.body.tagIds && req.body.tagIds.length) {
-
         ProductTag.findAll({
           where: { product_id: req.params.id }
         }).then((productTags) => {
@@ -126,7 +123,6 @@ router.put('/:id', (req, res) => {
       return res.json(product);
     })
     .catch((err) => {
-      // console.log(err);
       res.status(400).json(err);
     });
 });
@@ -145,8 +141,6 @@ router.delete('/:id', async (req, res) => {
     res.status(200).json({ message: 'Product deleted!' });
   } catch (error) {
     res.status(500).json({ message: 'Internal Server Error' });
-
-
   }
 
 });
