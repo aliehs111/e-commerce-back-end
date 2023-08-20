@@ -27,7 +27,7 @@
  ## Link
  This app is not deployed.  Here is a link to the walk-through video:https://drive.google.com/file/d/18tTH_WwZ8skv2lrxRZ-KaLm5MH8yIVFY/view
  ## Screenshot
-![Alt text](/e-commerce-back-end/Assets/Screenshot%202023-08-20%20at%206.19.25%20PM.png)
+ ![Alt text](/Assets/Screenshot%202023-08-20%20at%206.19.25%20PM.png)
  ## Email
  smcgov11.11@gmail.com
     
